@@ -6,3 +6,18 @@
       name: "nginx"
       state: "latest"
       update_cache: true
+
+  - name: "Create folder"
+    ansible.builtin.file:
+      path: "/mnt/folder"
+      state: directory
+
+#  - name: "Delete folder"
+#    ansible.builtin.file:
+#      path: "/mnt/folder"
+#      state: absent
+
+  - name: "Copy file to server"
+    ansible.builtin.copy:
+      src: "wordpress/files/upload_file.txt"
+      dest: "/mnt/folder/"
