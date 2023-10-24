@@ -1,0 +1,10 @@
+# Installing PHP
+
+- name: "Installing PHP FPM and PHP mysql via apt"
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: "latest"
+    update_cache: true
+  with_items:
+    - "php-fpm"
+    - "php-mysql"
