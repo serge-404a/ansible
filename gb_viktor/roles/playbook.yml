@@ -5,6 +5,7 @@
     - nginx
     - mysql
     - php
+
   tasks:
   - name: "Copy file to server"
     ansible.builtin.copy:
