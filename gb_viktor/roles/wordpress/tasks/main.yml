@@ -1,4 +1,4 @@
 ---
-# tasks file for wordpress
+# tasks file for roles
 - name: Install VIM for Ubuntu
   import_tasks: ubuntu.yml

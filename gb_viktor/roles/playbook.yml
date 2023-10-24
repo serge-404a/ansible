@@ -1,0 +1,79 @@
+---
+- hosts: "all"
+  tasks:
+
+  #  installing NGNIX
+
+  - name: "Install nginx via apt"
+    ansible.builtin.apt:
+      name: "nginx"
+      state: "latest"
+      update_cache: true
+
+  - name: "Create folder"
+    ansible.builtin.file:
+      path: "/mnt/folder"
+      state: directory
+
+#  - name: "Delete folder"
+#    ansible.builtin.file:
+#      path: "/mnt/folder"
+#      state: absent
+
+  - name: "Copy file to server"
+    ansible.builtin.copy:
+      src: "roles/files/upload_file.txt"
+      dest: "/mnt/folder/"
+#      owner: "testuser"
+#      group: "testuser"
+#      mode: "0644"
+
+  #  installing MySQL
+
+  - name: "Installing MySQL via apt"
+    ansible.builtin.apt:
+      name: "mysql-server"
+      state: "latest"
+      update_cache: true
+
+  - name: "Installing python3-pymysql via apt"
+    ansible.builtin.apt:
+      name: "python3-pymysql"
+      state: "latest"
+      update_cache: true
+
+  - name: "Setup root user"
+    community.mysql.mysql_user:
+      name: "root"
+      password: "password"
+#      после установки залогиниться не удастся по кредам выше, поэтому надо указать креды
+#      вручную
+      login_user: "root"
+      login_password: "password"
+      check_implicit_admin: true
+      login_unix_socket: "/var/run/mysqld/mysqld.sock"
+
+  - name: "Delete anon user"
+    community.mysql.mysql_user:
+      name: ""
+      state: "absent"
+      login_user: "root"
+      login_password: "password"
+
+  - name: "Delete test db"
+    community.mysql.mysql_db:
+      name: "test"
+      state: "absent"
+      login_user: "root"
+      login_password: "password"
+
+# Installing PHP
+
+  - name: "Installing PHP FPM and PHP mysql via apt"
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: "latest"
+      update_cache: true
+    with_items:
+      - "php-fpm"
+      - "php-mysql"
