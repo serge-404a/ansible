@@ -1,0 +1,11 @@
+---
+- hosts: "vm"
+  tasks:
+    - name: "Install NTP-client"
+      become: "true"
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: "present"
+      with_items:
+      - "ntpdate"
+      - "tzdata"
